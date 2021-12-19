@@ -12,6 +12,11 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
 
+
+class CCNotAvailable(Exception):
+    pass
+
+
 driver_path = ChromeDriverManager().install()
 
 
@@ -36,8 +41,8 @@ def Download(vid, tlang=None):
             EC.presence_of_element_located((By.XPATH, '//button[@class="ytp-subtitles-button ytp-button"]')))
         cc_element.click()
     except:
-        print('CC Not Available')
-        pass
+        raise CCNotAvailable('CC Not Available For This Video')
+
     s = ''
     for i in driver.get_log('performance'):
         s += f'\n{str(i)}'
@@ -73,7 +78,8 @@ def Download(vid, tlang=None):
             except:
                 time.sleep(.5)
     else:
-        print('CC Not Found')
+        raise CCNotAvailable('CC Not Found In Network.Request')
 
 
-Download('EDul4jJQA2I', tlang=None)
+if __name__ == '__main__':
+    Download('EDul4jJQA2I', tlang=None)
