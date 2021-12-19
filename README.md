@@ -3,20 +3,21 @@ This can be used to download transcripts of YouTube videos from YouTube for vide
 Download as srt file.
 
 # Requirements
- json
- re
- time
- pandas
- requests
- webdriver_manager
- selenium
+ json,
+ re,
+ time,
+ pandas,
+ requests,
+ webdriver_manager,
+ selenium,
  
  # Usage
  ```
-  
   import ytTranscript
+  
   # https://www.youtube.com/watch?v=EDul4jJQA2I
   # see tlang options
+  
   ytTranscript.Download('EDul4jJQA2I', tlang='Hi')
  
  ```
