@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
-
+from selenium.webdriver.chrome.service import Service
 
 class CCNotAvailable(Exception):
     pass
@@ -31,7 +31,7 @@ def Download(vid, tlang=None):
     capabilities = DesiredCapabilities.CHROME
     capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
     driver = Chrome(
-        driver_path,
+        service=Service(driver_path),
         desired_capabilities=capabilities,
         options=opt
     )
