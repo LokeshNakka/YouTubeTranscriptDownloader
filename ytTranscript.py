@@ -4,6 +4,7 @@ import time
 import pandas
 import requests
 
+from YT_TLangs import *
 from selenium.webdriver import Chrome
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.wait import WebDriverWait
@@ -12,6 +13,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
+
 
 class CCNotAvailable(Exception):
     pass
@@ -30,14 +32,27 @@ def Download(vid, tlang=None):
     opt.add_argument("--headless")
     capabilities = DesiredCapabilities.CHROME
     capabilities["goog:loggingPrefs"] = {"performance": "ALL"}
-    driver = Chrome(
-        service=Service(driver_path),
-        desired_capabilities=capabilities,
-        options=opt
-    )
-    driver.get(url)
+    driver = None
     try:
-        cc_element = WebDriverWait(driver, 5).until(
+        driver = Chrome(
+            service=Service(driver_path),
+            desired_capabilities=capabilities,
+            options=opt
+        )
+    except Exception as error:
+        driver = Chrome(
+            driver_path,
+            desired_capabilities=capabilities,
+            options=opt
+        )
+    while True:
+        try:
+            driver.get(url)
+            break
+        except:
+            time.sleep(2)
+    try:
+        cc_element = WebDriverWait(driver, 8).until(
             EC.presence_of_element_located((By.XPATH, '//button[@class="ytp-subtitles-button ytp-button"]')))
         cc_element.click()
     except:
@@ -51,6 +66,7 @@ def Download(vid, tlang=None):
         while True:
             try:
                 url = links[-1]
+                print(url)
                 response = requests.get(url if tlang is None else f'{url}&tlang={tlang}')
                 events = response.json()['events']
                 with open('sub.json', 'w')as jfile:
@@ -71,15 +87,15 @@ def Download(vid, tlang=None):
                             s_entry = f'{sub_index}\n{sub_TimeStamp(tStartMs)} --> {sub_TimeStamp(tEndMs)}\n{dialogue}\n'
                             subtitles_entries.append(s_entry)
                             sub_index += 1
-                with open('sub.srt', 'w', encoding='utf-8') as f:
+                with open('sub.srt', 'w', encoding= 'utf-8') as f:
                     f.write('\n'.join(subtitles_entries))
-
                 break
-            except:
+            except Exception as err:
+                print(err)
                 time.sleep(.5)
     else:
         raise CCNotAvailable('CC Not Found In Network.Request')
 
 
 if __name__ == '__main__':
-    Download('EDul4jJQA2I', tlang=None)
+    Download('EDul4jJQA2I', tlang=TLangs.English)
