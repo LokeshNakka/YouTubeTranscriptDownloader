@@ -14,7 +14,8 @@ Download as srt file.
  # Usage
  ```
   import ytTranscript
-  
+  from YT_TLangs import *
+
   # https://www.youtube.com/watch?v=EDul4jJQA2I
   # see tlang options
   
