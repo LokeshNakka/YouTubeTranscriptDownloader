@@ -18,7 +18,7 @@ Download as srt file.
   # https://www.youtube.com/watch?v=EDul4jJQA2I
   # see tlang options
   
-  ytTranscript.Download('EDul4jJQA2I', tlang='Hi')
+  ytTranscript.Download('EDul4jJQA2I', tlang=TLangs.English)
  
  ```
 
