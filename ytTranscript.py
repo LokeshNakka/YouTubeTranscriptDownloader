@@ -14,16 +14,11 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
-
 class CCNotAvailable(Exception):
     pass
 
 
 driver_path = ChromeDriverManager().install()
-
-
-def sub_TimeStamp(tms):
-    return f"{pandas.Timestamp(tms, unit='ms').strftime('%H:%M:%S')},{tms % 1000}"
 
 
 def GetBrowser(isHeadless=True):
@@ -44,6 +39,8 @@ def Download(vid, tlang=None):
     url = f'https://www.youtube.com/watch?v={vid}'
 
     driver = GetBrowser()
+    driver.get(url)
+
 
     while True:
         try:
